@@ -180,7 +180,7 @@ public class ToastView: UIView {
         layer.cornerRadius = bounds.height / 2
     }
 
-    public func show(originWindowScene: UIWindowScene? = nil, haptic: UINotificationFeedbackGenerator.FeedbackType? = nil) {
+    public func show(originWindowScene: UIWindowScene? = nil, haptic: UINotificationFeedbackGenerator.FeedbackType? = nil, onHide: (() -> Void)? = nil) {
         if let haptic {
             UINotificationFeedbackGenerator().notificationOccurred(haptic)
         }
@@ -196,18 +196,19 @@ public class ToastView: UIView {
             self.transform = .identity
         }) { [self] _ in
             if autoHide {
-                hide(after: displayTime)
+                hide(after: displayTime, onHide: onHide)
             }
         }
     }
 
-    public func hide(after time: TimeInterval = 0.0) {
+    public func hide(after time: TimeInterval = 0.0, onHide: (() -> Void)? = nil) {
         DispatchQueue.main.asyncAfter(deadline: .now() + time) {
             UIView.animate(withDuration: self.hideAnimationDuration, delay: 0, options: .curveEaseIn, animations: { [self] in
                 transform = initialTransform
             }) { [self] _ in
                 removeFromSuperview()
                 overlayWindow = nil
+                onHide?()
             }
         }
     }
