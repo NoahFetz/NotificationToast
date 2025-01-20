@@ -12,6 +12,9 @@ A view that tries to replicate iOS default toast message view.
 Add this lib to your project using SPM or Cocoapods.
 
 To get the simple "Apple look" you only have to do this:
+
+## UIKit
+
 ```swift
 import NotificationToast
 
@@ -36,6 +39,28 @@ You can present the view with a haptic feedback at the same time (`nil` by defau
 ```swift
 toast.show(haptic: .success)
 ```
+
+## SwiftUI
+
+```swift
+    @State var isPresented = false
+
+    Button("Present toast") {
+        isPresented = true
+    }
+    .toast(isPresented: $isPresented, title: "Safari pasted from Notes")
+```
+
+Similarly to UIKit, you can customize the view using the optional parameters (see auto-completion for all the options):
+```swift
+    @State var isPresented = false
+
+    Button("Present toast") {
+        isPresented = true
+    }
+    .toast(isPresented: $isPresented, title: "AirPods Pro", subtitle: "Connected", icon: UIImage(systemName: "airpodspro"))
+```
+
 
 # Contribute
 As this is my first 'UI' package I'm sure it can be greatly improved, PR are welcome 😊
